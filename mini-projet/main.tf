@@ -25,7 +25,7 @@ module "eip" {
 module "ebs" {
   source = "./modules/ebs"
   AZ = var.AZ
-  size = 100
+  size = var.size
 }
 
 resource "aws_volume_attachment" "ebs_att" {

@@ -8,3 +8,8 @@ variable "AZ" {
   type    = string
   default = "us-east-1b"
 }
+
+variable "size" {
+  type    = number
+  default = 100
+}
