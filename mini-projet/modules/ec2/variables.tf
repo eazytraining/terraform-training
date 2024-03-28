@@ -4,11 +4,6 @@ variable "instance_type" {
   default = "t4g.nano"
 }
 
-variable "security_groups" {
-  type = set(string)
-  default = null
-}
-
 variable "aws_common_tag" {
   type = map
   description = "Set aws tag"
@@ -20,4 +15,9 @@ variable "aws_common_tag" {
 variable "AZ" {
   type    = string
   default = "us-east-1b"
+}
+
+variable "security_groups" {
+  type = set(string)
+  default = null
 }

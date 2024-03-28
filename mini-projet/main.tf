@@ -1,5 +1,5 @@
 provider "aws" {
-  region     = var.region
+  region     = local.region
   access_key = "YOUR-ACCESS-KEY"
   secret_key = "YOUR-SECRET-KEY"
 }
@@ -10,12 +10,10 @@ module "sg" {
 
 module "ec2" {
   source = "./modules/ec2"
-  instance_type = "t4g.micro"
-  aws_common_tag = {
-    Name = "ec2-mini-projet-anselme"
-  }
-  security_groups = [ module.sg.aws_security_group_name ]
-  AZ = var.AZ
+  instance_type = local.instance_type
+  AZ = local.AZ
+  aws_common_tag = local.aws_common_tag
+  security_groups = [module.sg.aws_security_group_name]
 }
 
 module "eip" {
@@ -24,8 +22,8 @@ module "eip" {
 
 module "ebs" {
   source = "./modules/ebs"
-  AZ = var.AZ
-  size = var.size
+  AZ = local.AZ
+  size = local.size
 }
 
 resource "aws_volume_attachment" "ebs_att" {
@@ -35,6 +33,13 @@ resource "aws_volume_attachment" "ebs_att" {
 }
 
 resource "aws_eip_association" "eip_assoc" {
-  instance_id   = module.ec2.aws_instance_id
+  instance_id = module.ec2.aws_instance_id
   allocation_id = module.eip.aws_eip_id
+}
+
+resource "null_resource" "name" {
+  depends_on = [ module.eip ]
+  provisioner "local-exec" {
+    command = "echo PUBLIC IP: ${module.eip.aws_eip_id} > ip_ec2.txt"
+  }
 }

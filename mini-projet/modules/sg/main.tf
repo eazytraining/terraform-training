@@ -29,7 +29,7 @@ resource "aws_security_group" "allow_http_https" {
   }
 
   egress {
-    description = "ssh from VPC"
+    description = "authorize outbound trafic"
     from_port = 0
     to_port = 0
     protocol = "ALL"
