@@ -13,7 +13,7 @@ data "aws_ami" "app_ami" {
 resource "aws_instance" "myec2" {
   ami           = data.aws_ami.app_ami.id
   instance_type = var.instance_type
-  key_name      = "devops-anselme"
+  key_name      = "devops-eazytraining"
   tags = var.aws_common_tag
   security_groups = [aws_security_group.allow_http_https.name]
 
@@ -26,7 +26,7 @@ resource "aws_instance" "myec2" {
     connection {
       type = "ssh"
       user = "ec2-user"
-      private_key = file("./devops-anselme.pem")
+      private_key = file("../../.secrets/devops-eazytraining.pem")
       host = self.public_ip
     }
   }
@@ -61,7 +61,7 @@ resource "aws_security_group" "allow_http_https" {
   }
 
   egress {
-    description = "ssh from VPC"
+    description = "allow all traffic from VPC"
     from_port = 0
     to_port = 0
     protocol = "ALL"

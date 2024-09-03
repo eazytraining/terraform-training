@@ -1,16 +1,26 @@
+#Terraform v1.9.4 || Terraform 0.13 and later
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "= 5.65.0"
+    }
+  }
+}
+
 provider "aws" {
   region     = "us-east-1"
-  access_key = "YOUR-ACCESS-KEY"
-  secret_key = "YOUR-SECRET-KEY"
+  shared_credentials_files = ["../.secrets/credentials"]
+  profile                  = "default"
 }
 
 terraform {
   backend "s3" {
     region     = "us-east-1"
-    access_key = "YOUR-ACCESS-KEY"
-    secret_key = "YOUR-SECRET-KEY"
-    bucket = "terraform-backend-anselme"
-    key = "anselme.fstate"
+    shared_credentials_files = ["../.secrets/credentials"]
+    profile                  = "default"
+    bucket = "terraform-backend-eazy-tp5"
+    key = "eazy-tp5.fstate"
   }
 }
 
@@ -27,7 +37,7 @@ data "aws_ami" "app_ami" {
 resource "aws_instance" "myec2" {
   ami           = data.aws_ami.app_ami.id
   instance_type = var.instance_type
-  key_name      = "devops-anselme"
+  key_name      = "devops-eazytraining"
   tags = var.aws_common_tag
   security_groups = [aws_security_group.allow_http_https.name]
 
@@ -40,14 +50,14 @@ resource "aws_instance" "myec2" {
     connection {
       type = "ssh"
       user = "ec2-user"
-      private_key = file("./devops-anselme.pem")
+      private_key = file("../.secrets/devops-eazytraining.pem")
       host = self.public_ip
     }
   }
 }
 
 resource "aws_security_group" "allow_http_https" {
-  name = "anselme-sg"
+  name = "eazytraining-sg"
   description = "Allow http and https inbound traffic"
 
   ingress {
@@ -75,7 +85,7 @@ resource "aws_security_group" "allow_http_https" {
   }
 
   egress {
-    description = "ssh from VPC"
+    description = "allow all traffic from VPC"
     from_port = 0
     to_port = 0
     protocol = "ALL"
