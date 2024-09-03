@@ -1,24 +1,34 @@
+#Terraform v1.9.4 || Terraform 0.13 and later
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "= 5.65.0"
+    }
+  }
+}
+
 provider "aws" {
-  region     = "us-east-1"
-  access_key = "YOUR-ACCESS-KEY"
-  secret_key = "YOUR-SECRET-KEY"
+  region                   = "us-east-1"
+  shared_credentials_files = ["../../.secrets/credentials"]
+  profile                  = "default"
 }
 
 terraform {
   backend "s3" {
-    region     = "us-east-1"
-    access_key = "YOUR-ACCESS-KEY"
-    secret_key = "YOUR-SECRET-KEY"
-    bucket = "terraform-backend-anselme"
-    key = "anselme-dev.fstate"
+    region                   = "us-east-1"
+    shared_credentials_files = ["../../.secrets/credentials"]
+    profile                  = "default"
+    bucket                   = "terraform-backend-eazy-tp6"
+    key                      = "eazy-dev-tp6.tfstate"
   }
 }
 
 module "ec2" {
-  source = "../modules/ec2module"
+  source        = "../modules/ec2module"
   instance_type = "t2.nano"
   aws_common_tag = {
-    Name = "ec2-dev-anselme"
+    Name = "ec2-dev-eazy-tp6"
   }
-  sg_name = "anselme-dev-sg"
+  sg_name = "eazy-dev-sg"
 }
