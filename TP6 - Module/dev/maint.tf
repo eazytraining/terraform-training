@@ -9,23 +9,23 @@ terraform {
 }
 
 provider "aws" {
-  region     = "us-east-1"
+  region                   = "us-east-1"
   shared_credentials_files = ["../../.secrets/credentials"]
   profile                  = "default"
 }
 
 terraform {
   backend "s3" {
-    region     = "us-east-1"
+    region                   = "us-east-1"
     shared_credentials_files = ["../../.secrets/credentials"]
     profile                  = "default"
-    bucket = "terraform-backend-eazy-tp6"
-    key = "eazy-dev-tp6.tfstate"
+    bucket                   = "terraform-backend-eazy-tp6"
+    key                      = "eazy-dev-tp6.tfstate"
   }
 }
 
 module "ec2" {
-  source = "../modules/ec2module"
+  source        = "../modules/ec2module"
   instance_type = "t2.nano"
   aws_common_tag = {
     Name = "ec2-dev-eazy-tp6"

@@ -1,17 +1,17 @@
 variable "instance_type" {
-  type = string
+  type        = string
   description = "set aws instance type"
-  default = "t2.nano"
+  default     = "t2.nano"
 }
 
 variable "sg_name" {
-  type = string
+  type        = string
   description = "set sg name"
-  default = "eazy-sg"
+  default     = "eazy-sg"
 }
 
 variable "aws_common_tag" {
-  type = map
+  type        = map(any)
   description = "Set aws tag"
   default = {
     Name = "ec2-eazytraining"
