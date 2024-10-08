@@ -7,15 +7,7 @@ terraform {
     }
   }
   required_version = "1.9.4"
-}
 
-provider "aws" {
-  region                   = "us-east-1"
-  shared_credentials_files = ["../../.secrets/credentials"]
-  profile                  = "default"
-}
-
-terraform {
   backend "s3" {
     region                   = "us-east-1"
     shared_credentials_files = ["../../.secrets/credentials"]
@@ -23,6 +15,12 @@ terraform {
     bucket                   = "terraform-backend-eazy-tp6"
     key                      = "eazy-prod-tp6.tfstate"
   }
+}
+
+provider "aws" {
+  region                   = "us-east-1"
+  shared_credentials_files = ["../../.secrets/credentials"]
+  profile                  = "default"
 }
 
 module "ec2" {
