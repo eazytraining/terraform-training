@@ -33,6 +33,11 @@ data "aws_ami" "app_ami" {
     name   = "name"
     values = ["amzn2-ami-hvm*"]
   }
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
 }
 
 resource "aws_instance" "myec2" {
